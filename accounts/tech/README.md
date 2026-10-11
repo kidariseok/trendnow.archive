@@ -26,7 +26,7 @@
 **기획·분석 단계.** 아직 게시물은 없습니다.
 
 - 진행 중: [State of AI Report 2026 섹터별 분석](research/stateofai-2026/README.md). 9개 섹터를 여러 세션이 동시에 조사합니다.
-- 운영 방식: [오케스트레이션](planning/orchestration.md)
+- 운영 방식: [오케스트레이션](planning/orchestration.md) — Mac에서 tmux 창 여러 개로 실행, 시작 방법은 [local-setup.md](planning/local-setup.md)
 - 전체 과제: [로드맵](planning/roadmap.md)
 
 ## 기획 문서
@@ -37,6 +37,7 @@
 | [analysis-workflow.md](planning/analysis-workflow.md) | 뉴스 분석 6단계, 선별 점수표, 통과 조건 |
 | [sources.md](planning/sources.md) | 조사 도구별 역할과 크레딧 예산 |
 | [orchestration.md](planning/orchestration.md) | 여러 세션의 역할·흐름·브랜치·메모리 규칙, 상태판 |
+| [local-setup.md](planning/local-setup.md) | Mac 설치와 매번 시작하는 방법 |
 | [orchestration-log.md](planning/orchestration-log.md) | 실제 운영 기록과 회고 |
 
 ## 슬라이드 디자인 · 캡션 규칙
