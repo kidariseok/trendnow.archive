@@ -1,0 +1,11 @@
+{
+ "handle": "tech.archive",
+ "handle_status": "임시",
+ "folder": "tech",
+ "topic": "AI·테크 뉴스 선별과 해설",
+ "mood": "미정",
+ "slide": {"size": "1080x1350", "count": "미정", "header": {}},
+ "fonts": {"wordmark": "미정", "heading": "미정", "body": "미정"},
+ "colors": {},
+ "caption": {"credit_line": "미정", "brand_hashtag": "미정", "hashtag_count": 0}
+}

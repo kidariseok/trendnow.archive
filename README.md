@@ -8,6 +8,7 @@ Instagram 계정 여러 개의 게시용 최종 이미지·캡션을 한곳에 �
 | 계정 | 다루는 것 | 분위기 | 게시물 | 세부 페이지 |
 |---|---|---|---|---|
 | `trendnow.archive` | 서울 전시·바·카페 직접 방문기 | 차분한 에디토리얼, 사진 위주 | 3 | [accounts/trendnow.archive](accounts/trendnow.archive/README.md) |
+| `tech.archive` (임시 이름) | AI·테크 뉴스 선별과 해설 | 미정 (기획·분석 단계) | 0 | [accounts/tech](accounts/tech/README.md) |
 
 ## 구조
 
@@ -20,7 +21,7 @@ accounts/
   _template/       새 계정을 만들 때 복사할 틀
 ```
 
-게시물 번호는 계정마다 001부터 따로 셉니다.
+게시물 번호는 계정마다 001부터 따로 셉니다. 이름이 바뀔 수 있는 계정은 바뀌지 않는 폴더 이름(예: `tech`)을 쓰고, 실제 계정 이름은 `profile.json`의 `handle`에 둡니다.
 
 ## 새 계정 추가
 
