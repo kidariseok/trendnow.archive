@@ -8,12 +8,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git merge:*)",
-      "Bash(git worktree list:*)",
       "Bash(pdftotext:*)",
       "Bash(jq:*)",
-      "Bash(wc:*)",
-      "Bash(accounts/tech/scripts/tech.sh:*)",
-      "Bash(./accounts/tech/scripts/tech.sh:*)"
+      "Bash(wc:*)"
     ]
   }
 }

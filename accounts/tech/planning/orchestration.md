@@ -2,75 +2,66 @@
 
 ← [tech.archive](../README.md)
 
-여러 Claude Code 세션이 역할을 나눠 동시에 일하고, 지휘자 세션이 나누고·감시하고·합치는 방식입니다. **사용자의 Mac에서 tmux 창 여러 개 + git worktree로 실행합니다.** 주 조사 도구인 Claude in Chrome이 로컬에서만 돌기 때문입니다(처음엔 클라우드 세션으로 계획했다가 옮김). 이 문서의 상태판은 **지휘자만** 고칩니다.
+Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 역할별 에이전트를 띄워 동시에 일하게 합니다. [harness](../../../.claude/skills/harness/SKILL.md) 스킬로 역할을 설계했습니다. 이 문서의 상태판은 **지휘자만** 고칩니다.
 
-- 설치와 시작: [local-setup.md](local-setup.md)
-- 창 열기·메시지·병합 도구: [`scripts/tech.sh`](../scripts/tech.sh)
+- 시작 방법: [local-setup.md](local-setup.md)
+- 지휘 절차(실행 모드, 호출 방법, 오류 처리): [`tech-research` 스킬](../../../.claude/skills/tech-research/SKILL.md)
+
+> 처음에는 클라우드 세션 여러 개 → 다음엔 tmux 창 여러 개 + git worktree로 계획했다가, 세션 하나 안의 에이전트 팀으로 바꿨습니다. 경위는 [운영 기록](orchestration-log.md)에 있습니다.
 
 ## 역할
 
-| 역할 | 어디서 | 하는 일 | 쓰는 파일 |
-|---|---|---|---|
-| 지휘자 | tmux 첫 창, 저장소 폴더 | `tech.sh`로 창 열기·메시지, 브랜치 병합·백업 푸시, 상태판·크레딧 합산, Alexandria 요청 정리 | 이 문서, `orchestration-log.md`, 연구 폴더 `README.md` |
-| 섹터 작업자 | tmux 창 `w-<slug>`, 섹터별 worktree | A단계: 리포트 정리 + 한국 보도 + Chrome 지시서 / B단계: Chrome 결과 통합, 최종 분석 | 자기 섹터 폴더의 `dossier.md`, `brief.md`, `chrome-brief.md`, `credits.md` |
-| 구글 조사 담당 | tmux 창 `chrome`, `claude --chrome` (Chrome을 쓰는 유일한 창) | 섹터별 Chrome 지시서를 차례로 처리 | 각 섹터의 `chrome-findings.md` |
-| 검수자 | tmux 창 `review-<이름>`, 웨이브당 1개 (작성에 참여 안 함) | 수치·날짜·인용·출처 대조 | 각 섹터의 `review.md` |
+| 역할 | 에이전트 정의 | 모델 | 실행 방식 | 쓰는 파일 (섹터 폴더) |
+|---|---|---|---|---|
+| 지휘자 | 메인 세션 + `tech-research` 스킬 | 세션 모델 (fable 권장) | — | 이 문서, `orchestration-log.md`, 연구 폴더 `README.md` |
+| 리포트 수집가 | [`report-collector`](../../../.claude/agents/report-collector.md) | sonnet | 단발, 섹터마다 병렬 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
+| 웹 조사원 | [`web-researcher`](../../../.claude/agents/web-researcher.md) | sonnet | 지속형 1명, 섹터 순차 | `chrome-findings.md` |
+| 섹터 분석가 | [`sector-analyst`](../../../.claude/agents/sector-analyst.md) | opus | 단발, 섹터마다 | `dossier.md` 4–7절, `brief.md` |
+| 팩트체커 | [`fact-checker`](../../../.claude/agents/fact-checker.md) | opus | 단발, 웨이브당 1명 | `review.md` |
+| 회고 | `harness-evolve` 스킬 | — | 웨이브 후 | 에이전트·스킬, `CLAUDE.md` |
 
-지시문: [conductor.md](prompts/conductor.md) · [sector-worker.md](prompts/sector-worker.md) · [chrome-researcher.md](prompts/chrome-researcher.md) · [reviewer.md](prompts/reviewer.md)
+스킬: [sector-dossier](../../../.claude/skills/sector-dossier/SKILL.md) (수집·분석 방법) · [chrome-research](../../../.claude/skills/chrome-research/SKILL.md) · [fact-check](../../../.claude/skills/fact-check/SKILL.md)
 
 ## 섹터 하나의 흐름
 
 ```
-작업자 A단계 ─commit─▶ tech.sh merge ─▶ tech.sh chrome ─▶ Chrome 조사 ─commit─▶ tech.sh merge
-                                                                              │ tech.sh send "B단계 시작"
-검수자 ◀─ tech.sh reviewer ◀─ tech.sh merge ◀─commit─ 작업자 B단계 ◀───────────┘
-   │
-   └─commit─▶ tech.sh merge ─▶ 섹터 완료 (지휘자가 통합 브랜치 푸시)
+수집가 ─▶ 커밋 ─▶ 웹 조사원(Chrome, 한 섹터씩) ─▶ 커밋 ─▶ 분석가 ─▶ 커밋
+                                                                    │
+                       섹터 완료 ◀─ 커밋 ◀─ 팩트체커 ◀────────────────┘
+                                          │ 수정 필요 → 분석가 다시 (최대 2회)
 ```
 
-모든 창이 같은 저장소의 worktree라서 푸시 없이 로컬 브랜치끼리 병합합니다.
+섹터마다 앞 단계가 끝나는 대로 다음 단계로 넘어갑니다. 다른 섹터를 기다리지 않습니다. 커밋은 지휘자가 하며, 단계 사이의 파일을 고정(동결)하는 역할을 합니다.
 
 ## 웨이브
 
-| 웨이브 | 섹터 | 동시 세션 |
+| 웨이브 | 섹터 | 동시 실행 |
 |---|---|---|
-| 시범 | 02 agents | 작업자 1 |
-| A | 01 research · 03 compute · 04 business · 08 safety | 작업자 4 + 검수자 1 |
-| B | 05 robotics · 06 science · 07 policy · 09 predictions | 작업자 4 + 검수자 1 |
-
-Chrome은 브라우저 하나를 공유하므로 구글 조사 담당은 한 세션이 섹터를 차례로 처리합니다. 09 predictions는 다른 섹터의 `brief.md`를 참고합니다.
+| 시범 | 02 agents | 수집가 1 → 조사원 1 → 분석가 1 → 팩트체커 1 |
+| A | 01 research · 03 compute · 04 business · 08 safety | 수집가·분석가 최대 4 + 조사원 1 + 팩트체커 1 |
+| B | 05 robotics · 06 science · 07 policy · 09 predictions | 같음. 09는 다른 섹터의 `brief.md`를 참고 |
 
 ## 브랜치
 
-| 누가 | 브랜치 |
-|---|---|
-| 지휘자 (통합, 저장소 폴더) | `claude/festive-hypatia-4b15sz` |
-| 섹터 작업자 | `claude/festive-hypatia-4b15sz-<slug>` (예: `-agents`) |
-| 검수자 | `claude/festive-hypatia-4b15sz-review-a`, `-review-b` (시범은 `-review-pilot`) |
-| 구글 조사 담당 | `claude/festive-hypatia-4b15sz-chrome` |
-
-- 나머지 브랜치는 `tech.sh`가 통합 브랜치에서 만들어 `../<저장소 폴더>-worktrees/<이름>`에 worktree로 엽니다.
-- 작업자·Chrome·검수자는 **커밋만** 하고, 다음 단계 전에 `git merge claude/festive-hypatia-4b15sz`로 최신을 받습니다.
-- 병합과 GitHub 푸시(통합 브랜치 백업)는 지휘자만 합니다. `main`에는 이 프로젝트 동안 아무것도 병합하지 않습니다.
+모든 작업은 `claude/festive-hypatia-4b15sz` 하나에서 합니다. 에이전트는 커밋하지 않고, 지휘자가 단계마다 커밋하고 푸시합니다. `main`에는 이 프로젝트 동안 아무것도 병합하지 않습니다.
 
 ## 메모리(컨텍스트) 관리 규칙
 
-1. **파일이 기억이다.** 조사 결과는 채팅이 아니라 파일에 바로 쓴다. 세션 컨텍스트가 압축되거나 끊겨도 작업이 남는다.
-2. **지휘자는 요약만 읽는다.** 지휘자는 섹터의 `brief.md`(30줄 이하)와 세션 상태만 본다. `dossier.md` 전체와 작업자의 대화 기록은 읽지 않는다(검수자 몫).
-3. **필요한 만큼만 읽는다.** 244장 PDF를 통째로 넣지 않는다. 섹터 페이지 → 인용된 슬라이드 번호만 `pdftotext -f N -l N`으로 읽는다.
-4. **한 파일엔 한 명만 쓴다.** 섹터 폴더의 파일마다 쓰는 사람이 정해져 있어 병합 충돌이 나지 않는다.
-5. **폴링하지 않는다.** 지휘자는 일을 넘긴 뒤 턴을 끝내고, 사용자가 “상태 확인”이라고 하면 `tech.sh status`와 새 `brief.md`만 본다.
-6. **기록한다.** 시작·종료 시각, 크레딧, 컨텍스트 압축, 충돌, 개입을 `orchestration-log.md`에 남긴다.
+1. **파일이 기억이다.** 조사 결과는 대화가 아니라 파일에 바로 쓴다. 컨텍스트가 압축되거나 에이전트가 끝나도 작업이 남는다.
+2. **지휘자는 요약만 읽는다.** 에이전트 반환값(= `brief.md`, 30줄 이하)과 한 줄 보고만 본다. `dossier.md` 본문과 에이전트 대화는 읽지 않는다.
+3. **분석가는 새로 시작한다.** 수집가의 대화를 이어받지 않고 파일만 읽는다. 사실과 해석이 섞이지 않고, 파일에 빠진 것이 바로 드러난다.
+4. **필요한 만큼만 읽는다.** 244장 PDF를 통째로 넣지 않는다. 섹터 페이지 → 인용된 슬라이드만 `pdftotext -f N -l N`.
+5. **원자료는 `_workspace/`에.** pdftotext 출력, API 응답 원본은 커밋하지 않는 `_workspace/stateofai-2026/<섹터>/`에 둔다.
+6. **한 파일엔 한 명만 쓴다.** 같은 폴더에서 여럿이 동시에 일해도 충돌하지 않는다.
+7. **기록한다.** 단계 시각, 에이전트별 소요 시간·토큰, 크레딧, 컨텍스트 압축, 사람의 개입을 `orchestration-log.md`에 남긴다.
 
 ## 시범 통과 조건
 
-- [ ] 작업자 창에서 Firecrawl 도구가 보임
-- [ ] 작업자 창에서 네이버 API `curl` 응답 200
-- [ ] 작업자 창에서 stateof.ai `curl` 응답 200
-- [ ] 작업자 커밋 → `tech.sh merge` 충돌 0
-- [ ] Chrome 창이 지시서대로 `chrome-findings.md` 커밋
+- [ ] 수집가에게 Firecrawl 도구가 보임, 네이버 API·stateof.ai `curl` 응답 200
+- [ ] 웹 조사원 첫 보고에 Claude in Chrome 도구가 있음 (없으면 지휘자가 대신 처리하고 기록)
 - [ ] 섹터 Firecrawl 사용 ≤ 6크레딧
-- [ ] 시범에서 드러난 문제를 템플릿·지시문에 반영
+- [ ] 6개 파일(`dossier`, `brief`, `chrome-brief`, `chrome-findings`, `credits`, `review`)이 모두 생김
+- [ ] 시범에서 드러난 문제를 `harness-evolve`로 에이전트·스킬에 반영
 
 ## 섹터 완료 조건
 
@@ -85,19 +76,19 @@ Chrome은 브라우저 하나를 공유하므로 구글 조사 담당은 한 세
 
 단계: `-` 대기 · `진행` · `완료` · `막힘`
 
-| 섹터 | 창 | A단계 | Chrome | B단계 | 검수 | 크레딧 |
-|---|---|---|---|---|---|---|
-| 01 research | | - | - | - | - | 0 |
-| 02 agents (시범) | | - | - | - | - | 0 |
-| 03 compute | | - | - | - | - | 0 |
-| 04 business | | - | - | - | - | 0 |
-| 05 robotics | | - | - | - | - | 0 |
-| 06 science | | - | - | - | - | 0 |
-| 07 policy | | - | - | - | - | 0 |
-| 08 safety | | - | - | - | - | 0 |
-| 09 predictions | | - | - | - | - | 0 |
+| 섹터 | 수집 | Chrome | 분석 | 검수 | 크레딧 |
+|---|---|---|---|---|---|
+| 01 research | - | - | - | - | 0 |
+| 02 agents (시범) | - | - | - | - | 0 |
+| 03 compute | - | - | - | - | 0 |
+| 04 business | - | - | - | - | 0 |
+| 05 robotics | - | - | - | - | 0 |
+| 06 science | - | - | - | - | 0 |
+| 07 policy | - | - | - | - | 0 |
+| 08 safety | - | - | - | - | 0 |
+| 09 predictions | - | - | - | - | 0 |
 
-**크레딧 합계**: 기획 조사 3 + 섹터 0 + Alexandria 0 = **3 / 상한 100**
+**크레딧 합계**: 기획 조사 3 + 섹터 0 + 검수 0 + Alexandria 0 = **3 / 상한 100**
 
 ### Alexandria 요청
 

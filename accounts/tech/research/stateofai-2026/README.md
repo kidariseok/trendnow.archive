@@ -28,12 +28,12 @@
 
 | 파일 | 쓰는 사람 | 내용 |
 |---|---|---|
-| `dossier.md` | 섹터 작업자 | 섹터 자료집 ([양식](../../templates/sector-dossier.md)) |
-| `brief.md` | 섹터 작업자 | 지휘자용 30줄 요약 ([양식](../../templates/sector-brief.md)) |
-| `chrome-brief.md` | 섹터 작업자 | 구글 조사 지시서 ([양식](../../templates/chrome-brief.md)) |
-| `credits.md` | 섹터 작업자 | Firecrawl 사용 기록 |
-| `chrome-findings.md` | 구글 조사 담당 | Chrome 조사 결과 ([양식](../../templates/chrome-findings.md)) |
-| `review.md` | 검수자 | 원문 대조 판정 |
+| `dossier.md` | 수집가(1–3절) · 분석가(4–7절) | 섹터 자료집 ([양식](../../templates/sector-dossier.md)) |
+| `brief.md` | 수집가 → 분석가가 갱신 | 지휘자용 30줄 요약 ([양식](../../templates/sector-brief.md)) |
+| `chrome-brief.md` | 수집가 | 구글 조사 지시서 ([양식](../../templates/chrome-brief.md)) |
+| `credits.md` | 수집가 | Firecrawl 사용 기록 |
+| `chrome-findings.md` | 웹 조사원 | Chrome 조사 결과 ([양식](../../templates/chrome-findings.md)) |
+| `review.md` | 팩트체커 | 원문 대조 판정 |
 
 ## 게시 순서안
 

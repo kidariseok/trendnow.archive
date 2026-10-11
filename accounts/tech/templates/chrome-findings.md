@@ -1,6 +1,6 @@
 # <NN> <섹터> — Chrome 조사 결과
 
-<!-- 구글 조사 담당(로컬 Chrome 세션)만 씁니다. -->
+<!-- 웹 조사원(web-researcher)만 씁니다. -->
 
 - 조사 일시: YYYY-MM-DD HH:MM KST
 - 처리한 검색 과제: N / N
