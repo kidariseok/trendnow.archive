@@ -17,10 +17,12 @@ Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 �
 | 리포트 수집가 | [`report-collector`](../../../.claude/agents/report-collector.md) | sonnet · medium | 단발, 섹터마다 병렬 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
 | 웹 조사원 | [`web-researcher`](../../../.claude/agents/web-researcher.md) | sonnet · medium | 지속형 1명, 섹터 순차 | `chrome-findings.md` |
 | 섹터 분석가 | [`sector-analyst`](../../../.claude/agents/sector-analyst.md) | opus · high | 단발, 섹터마다 | `dossier.md` 4–7절, `brief.md` |
-| 팩트체커 | [`fact-checker`](../../../.claude/agents/fact-checker.md) | opus · high | 단발, 웨이브당 1명 | `review.md` |
+| 팩트체커 | [`fact-checker`](../../../.claude/agents/fact-checker.md) | opus · high | 단발, 자료집 검수는 웨이브당 1명 / 카드 검수는 섹터마다 | `review.md`, `card/card-review.md` |
+| 카피 담당 | [`card-writer`](../../../.claude/agents/card-writer.md) | opus · high | 단발, 섹터마다 | `card/slides.md`, `card/caption.txt` |
+| 디자인 담당 | [`card-designer`](../../../.claude/agents/card-designer.md) | sonnet · medium | 지속형 1명, 섹터 순차 (Figma) | `card/01.jpg`~, `card/design-notes.md` |
 | 회고 | `harness-evolve` 스킬 | — | 웨이브 후 | 에이전트·스킬, `CLAUDE.md` |
 
-스킬: [sector-dossier](../../../.claude/skills/sector-dossier/SKILL.md) (수집·분석 방법) · [chrome-research](../../../.claude/skills/chrome-research/SKILL.md) · [fact-check](../../../.claude/skills/fact-check/SKILL.md)
+스킬: [sector-dossier](../../../.claude/skills/sector-dossier/SKILL.md) (수집·분석 방법) · [chrome-research](../../../.claude/skills/chrome-research/SKILL.md) · [fact-check](../../../.claude/skills/fact-check/SKILL.md) (자료집·카드 검수) · [card-copy](../../../.claude/skills/card-copy/SKILL.md) · [figma-cards](../../../.claude/skills/figma-cards/SKILL.md)
 
 ## 섹터 하나의 흐름
 
@@ -32,6 +34,20 @@ Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 �
 ```
 
 섹터마다 앞 단계가 끝나는 대로 다음 단계로 넘어갑니다. 다른 섹터를 기다리지 않습니다. 커밋은 지휘자가 하며, 단계 사이의 파일을 고정(동결)하는 역할을 합니다.
+
+### 카드뉴스 제작 (자료집 검수 통과 후)
+
+```
+검수 통과 ─▶ 사람이 각도 확정 ─▶ 카피 담당 ─▶ 커밋 ─▶ 디자인 담당(Figma) ─▶ 커밋
+                                                                       │
+        사람 최종 확인 ◀─ 커밋 ◀─ 카드 검수(팩트체커) ◀────────────────┘
+                                   │ 문안 수정 → 카피 담당 → 디자인 담당(해당 장) → 다시 검수 (최대 2회)
+                                   │ 디자인 수정 → 디자인 담당 → 다시 검수
+```
+
+- **각도는 사람이 확정한다.** 지휘자가 `dossier.md` 6절 후보를 보여 주고, 고른 것을 7절에 기록한다(분석가가 쓴 "결정" 칸을 사용자의 선택으로 갱신). 섹터당 게시물 1개.
+- 카드 결과물은 섹터 폴더의 `card/`에 둔다. 게시 번호를 받는 시점(T19)에 `accounts/tech/posts/`로 옮긴다.
+- Figma 파일은 하나(`technow.archive cards`), 섹터마다 페이지를 나눈다. 파일 키는 [figma.md](figma.md)에 지휘자가 기록한다.
 
 ## 웨이브
 
@@ -76,17 +92,19 @@ Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 �
 
 단계: `-` 대기 · `진행` · `완료` · `막힘`
 
-| 섹터 | 수집 | Chrome | 분석 | 검수 | 크레딧 |
-|---|---|---|---|---|---|
-| 01 research | - | - | - | - | 0 |
-| 02 agents (시범) | - | - | - | - | 0 |
-| 03 compute | - | - | - | - | 0 |
-| 04 business | - | - | - | - | 0 |
-| 05 robotics | - | - | - | - | 0 |
-| 06 science | - | - | - | - | 0 |
-| 07 policy | - | - | - | - | 0 |
-| 08 safety | - | - | - | - | 0 |
-| 09 predictions | - | - | - | - | 0 |
+| 섹터 | 수집 | Chrome | 분석 | 검수 | 각도 | 문안 | 디자인 | 카드검수 | 크레딧 |
+|---|---|---|---|---|---|---|---|---|---|
+| 01 research | - | - | - | - | - | - | - | - | 0 |
+| 02 agents (시범) | - | - | - | - | - | - | - | - | 0 |
+| 03 compute | - | - | - | - | - | - | - | - | 0 |
+| 04 business | - | - | - | - | - | - | - | - | 0 |
+| 05 robotics | - | - | - | - | - | - | - | - | 0 |
+| 06 science | - | - | - | - | - | - | - | - | 0 |
+| 07 policy | - | - | - | - | - | - | - | - | 0 |
+| 08 safety | - | - | - | - | - | - | - | - | 0 |
+| 09 predictions | - | - | - | - | - | - | - | - | 0 |
+
+각도 열의 `완료`는 사람이 7절을 확정했다는 뜻이다. 카드 단계는 크레딧을 쓰지 않는다(Firecrawl 미사용).
 
 **크레딧 합계**: 기획 조사 3 + 섹터 0 + 검수 0 + Alexandria 0 = **3 / 상한 100**
 
