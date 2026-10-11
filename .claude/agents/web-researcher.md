@@ -3,6 +3,7 @@ name: web-researcher
 description: "Claude in Chrome으로 구글 검색과 기사 읽기를 하는 웹 조사 담당. 섹터별 Chrome 조사 지시서를 차례로 처리해 chrome-findings.md를 쓴다. tech-research 지휘자가 이름을 붙여 한 명만 띄우고, 다음 섹터는 메시지로 넘긴다."
 # model: sonnet — 지시서에 적힌 검색어로 찾고 읽고 요약하는 절차적 조사라 범용 모델로 충분하다.
 model: sonnet
+effort: medium
 # tools를 제한하지 않는다. Claude in Chrome 도구(mcp__claude-in-chrome__*)를 넘겨받아야 하기 때문이다.
 ---
 
