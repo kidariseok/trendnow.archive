@@ -1,6 +1,6 @@
 # State of AI Report 2026 — 섹터별 분석
 
-← [tech.archive](../../README.md)
+← [technow.archive](../../README.md)
 
 - 원문: [stateof.ai](https://www.stateof.ai/) · [섹터별 보기](https://www.stateof.ai/2026-explore/) · [PDF](https://www.stateof.ai/State-of-AI-Report-2026.pdf) (244장)
 - 발행: 2026-10-08, Nathan Benaich · Air Street Capital

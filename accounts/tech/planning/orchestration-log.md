@@ -9,6 +9,8 @@
 | 2026-10-11 | 계획 승인, 기획 문서·템플릿 작성 | 지휘자 | 계획 조사에서 Firecrawl 3크레딧 사용(stateof.ai 페이지 3개). 클라우드 컨테이너에서 `openapi.naver.com`, `www.stateof.ai` 접속 차단 확인 → 사용자 환경 설정 대기 |
 | 2026-10-11 | 실행 환경을 클라우드에서 로컬(Mac, tmux + git worktree)로 변경 | 클라우드 세션 | 주 도구인 Claude in Chrome이 로컬 전용이라 클라우드↔로컬 브랜치 왕복을 없애기 위함. `tech.sh`, 지휘자 지시문, 설치 안내 추가. 클라우드 작업자 세션은 만들지 않았음 |
 | 2026-10-11 | harness 스킬로 역할 재설계: 세션 하나 안의 에이전트 팀 | 클라우드 세션 | 수집(sonnet)·분석(opus) 분리, 웹 조사원 지속형 1명, 팩트체커 웨이브당 1명. tmux·worktree·`tech.sh`·지시문 폴더 제거, `.claude/agents`·`.claude/skills`·`CLAUDE.md` 추가 |
+| 2026-10-11 | 에이전트별 effort 지정 (PR #1 병합) | 사용자 | 수집가·웹 조사원 medium, 분석가·팩트체커 high |
+| 2026-10-11 | 계정 이름 technow.archive로 확정 | 클라우드 세션 | 문서·에이전트·스킬 설명의 계정 이름 교체. 폴더 `accounts/tech`, 스킬 이름 `tech-research`는 유지 |
 
 ## 관찰
 

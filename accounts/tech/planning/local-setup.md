@@ -57,7 +57,7 @@ cd ~/trendnow.archive && git pull
 claude --chrome
 ```
 
-지휘자 세션의 모델은 `/model`로 고릅니다. 여러 단계를 계획하고 조율하는 역할이라 fable을 권장하고, 없으면 opus를 씁니다. 하위 에이전트의 모델은 에이전트 정의에 정해져 있습니다(수집·조사 sonnet, 분석·검수 opus).
+지휘자 세션의 모델은 `/model`로 고릅니다. 여러 단계를 계획하고 조율하는 역할이라 fable을 권장하고, 없으면 opus를 씁니다. 하위 에이전트의 모델과 effort는 에이전트 정의에 정해져 있습니다(수집·조사 sonnet·medium, 분석·검수 opus·high).
 
 그다음 이렇게 입력합니다.
 

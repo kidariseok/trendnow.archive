@@ -1,6 +1,6 @@
 # 로드맵
 
-← [tech.archive](../README.md)
+← [technow.archive](../README.md)
 
 상태: `대기` · `진행` · `완료` · `보류`. 과제를 끝내면 상태와 결과물 링크를 이 표에서 갱신합니다.
 

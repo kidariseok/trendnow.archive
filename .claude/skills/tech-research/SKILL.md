@@ -1,6 +1,6 @@
 ---
 name: tech-research
-description: "tech.archive의 State of AI Report 2026 섹터 분석을 지휘한다. 수집가·웹 조사원·분석가·팩트체커 에이전트를 웨이브 단위로 띄우고, 요약만 읽으며 상태판·크레딧·커밋을 관리한다. 'State of AI 섹터 분석 시작', '시범 섹터 진행', '웨이브 A/B 진행', 'tech.archive 리서치', '섹터 조사', '상태 확인'에 사용하며, 다시 실행, 재실행, 업데이트, 수정, 보완, '02 agents만 다시', '분석만 다시', '검수 다시', '이전 결과를 바탕으로 개선' 같은 후속 요청에도 사용한다. 섹터 하나의 자료 작성 방법은 sector-dossier, 하네스 자체를 고치는 일은 harness·harness-evolve가 맡는다."
+description: "technow.archive(폴더 accounts/tech)의 State of AI Report 2026 섹터 분석을 지휘한다. 수집가·웹 조사원·분석가·팩트체커 에이전트를 웨이브 단위로 띄우고, 요약만 읽으며 상태판·크레딧·커밋을 관리한다. 'State of AI 섹터 분석 시작', '시범 섹터 진행', '웨이브 A/B 진행', 'technow.archive 리서치', '섹터 조사', '상태 확인'에 사용하며, 다시 실행, 재실행, 업데이트, 수정, 보완, '02 agents만 다시', '분석만 다시', '검수 다시', '이전 결과를 바탕으로 개선' 같은 후속 요청에도 사용한다. 섹터 하나의 자료 작성 방법은 sector-dossier, 하네스 자체를 고치는 일은 harness·harness-evolve가 맡는다."
 ---
 
 # tech-research — State of AI 섹터 분석 지휘
@@ -20,12 +20,12 @@ description: "tech.archive의 State of AI Report 2026 섹터 분석을 지휘한
 
 ## 에이전트 구성
 
-| 이름 | `subagent_type` | 모델 | 스킬 | 산출물 (섹터 폴더) |
+| 이름 | `subagent_type` | 모델 · effort | 스킬 | 산출물 (섹터 폴더) |
 |---|---|---|---|---|
-| (단발) | `report-collector` | sonnet | sector-dossier 「수집」 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
-| `web-researcher` | `web-researcher` | sonnet | chrome-research | `chrome-findings.md` |
-| (단발) | `sector-analyst` | opus | sector-dossier 「분석」 | `dossier.md` 4–7절, `brief.md` |
-| (단발) | `fact-checker` | opus | fact-check | `review.md` |
+| (단발) | `report-collector` | sonnet · medium | sector-dossier 「수집」 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
+| `web-researcher` | `web-researcher` | sonnet · medium | chrome-research | `chrome-findings.md` |
+| (단발) | `sector-analyst` | opus · high | sector-dossier 「분석」 | `dossier.md` 4–7절, `brief.md` |
+| (단발) | `fact-checker` | opus · high | fact-check | `review.md` |
 
 섹터 폴더: `accounts/tech/research/stateofai-2026/<NN>-<slug>/`. 원자료: `_workspace/stateofai-2026/<NN>-<slug>/` (커밋 안 됨).
 

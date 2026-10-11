@@ -1,6 +1,6 @@
 # 오케스트레이션
 
-← [tech.archive](../README.md)
+← [technow.archive](../README.md)
 
 Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 역할별 에이전트를 띄워 동시에 일하게 합니다. [harness](../../../.claude/skills/harness/SKILL.md) 스킬로 역할을 설계했습니다. 이 문서의 상태판은 **지휘자만** 고칩니다.
 
@@ -11,13 +11,13 @@ Mac에서 Claude Code **세션 하나**를 지휘자로 열고, 그 안에서 �
 
 ## 역할
 
-| 역할 | 에이전트 정의 | 모델 | 실행 방식 | 쓰는 파일 (섹터 폴더) |
+| 역할 | 에이전트 정의 | 모델 · effort | 실행 방식 | 쓰는 파일 (섹터 폴더) |
 |---|---|---|---|---|
 | 지휘자 | 메인 세션 + `tech-research` 스킬 | 세션 모델 (fable 권장) | — | 이 문서, `orchestration-log.md`, 연구 폴더 `README.md` |
-| 리포트 수집가 | [`report-collector`](../../../.claude/agents/report-collector.md) | sonnet | 단발, 섹터마다 병렬 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
-| 웹 조사원 | [`web-researcher`](../../../.claude/agents/web-researcher.md) | sonnet | 지속형 1명, 섹터 순차 | `chrome-findings.md` |
-| 섹터 분석가 | [`sector-analyst`](../../../.claude/agents/sector-analyst.md) | opus | 단발, 섹터마다 | `dossier.md` 4–7절, `brief.md` |
-| 팩트체커 | [`fact-checker`](../../../.claude/agents/fact-checker.md) | opus | 단발, 웨이브당 1명 | `review.md` |
+| 리포트 수집가 | [`report-collector`](../../../.claude/agents/report-collector.md) | sonnet · medium | 단발, 섹터마다 병렬 | `dossier.md` 1–3절, `chrome-brief.md`, `credits.md`, `brief.md` |
+| 웹 조사원 | [`web-researcher`](../../../.claude/agents/web-researcher.md) | sonnet · medium | 지속형 1명, 섹터 순차 | `chrome-findings.md` |
+| 섹터 분석가 | [`sector-analyst`](../../../.claude/agents/sector-analyst.md) | opus · high | 단발, 섹터마다 | `dossier.md` 4–7절, `brief.md` |
+| 팩트체커 | [`fact-checker`](../../../.claude/agents/fact-checker.md) | opus · high | 단발, 웨이브당 1명 | `review.md` |
 | 회고 | `harness-evolve` 스킬 | — | 웨이브 후 | 에이전트·스킬, `CLAUDE.md` |
 
 스킬: [sector-dossier](../../../.claude/skills/sector-dossier/SKILL.md) (수집·분석 방법) · [chrome-research](../../../.claude/skills/chrome-research/SKILL.md) · [fact-check](../../../.claude/skills/fact-check/SKILL.md)
