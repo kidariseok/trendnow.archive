@@ -47,7 +47,7 @@ export NAVER_CLIENT_SECRET="발급받은 Secret"
 cd ~
 git clone https://github.com/kidariseok/trendnow.archive.git
 cd trendnow.archive
-git checkout claude/festive-hypatia-4b15sz
+git checkout <작업 브랜치>   # orchestration.md 「브랜치」에 적힌 것
 ```
 
 ## 2. 매번 시작할 때

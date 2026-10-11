@@ -8,3 +8,4 @@
 | 날짜 | 변경 내용 | 대상 | 사유 |
 | --- | --- | --- | --- |
 | 2026-10-11 | Harness v2로 처음 구성 (report-collector, web-researcher, sector-analyst, fact-checker / tech-research, sector-dossier, chrome-research, fact-check) | 전체 | tmux 창 여러 개 방식에서 세션 하나 안의 에이전트 팀으로 전환 |
+| 2026-10-11 | 검수 반려를 책임 단계(수집·Chrome·분석)로 라우팅, 에이전트 실행 기록 표와 회고 판단 기준 추가, 하드코딩된 작업 브랜치 제거 | fact-check, tech-research, fact-checker, report-collector, sector-analyst, orchestration.md, orchestration-log.md | 외부 감사 보고서 대조: 분석가가 고칠 수 없는 1–3절 오류에서 반려가 헛돌고, 측정 양식이 없었음 |

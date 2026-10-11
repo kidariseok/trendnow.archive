@@ -41,7 +41,7 @@ description: "tech.archive의 State of AI Report 2026 섹터 분석을 지휘한
 
 ### 1단계: 준비 (지휘자가 직접)
 
-- `git branch --show-current`가 `claude/festive-hypatia-4b15sz`인지. 이 프로젝트 동안 `main`에는 아무것도 병합하지 않는다.
+- 작업 브랜치 확인: `git branch --show-current`가 `orchestration.md` 「브랜치」에 적힌 작업 브랜치인지. 적힌 것이 없거나 이미 `main`에 병합된 브랜치면 사용자에게 이번 작업 브랜치를 물어 그 절에 적고 시작한다. 작업 중에는 `main`에 직접 커밋하지 않는다.
 - `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`이 있는지(값은 출력하지 않는다), `curl`로 stateof.ai 응답 코드.
 - 문제가 있으면 `accounts/tech/planning/local-setup.md`의 해당 단계를 사용자에게 알리고 멈춘다.
 - 이번 웨이브의 섹터 목록을 사용자에게 한 줄로 알린다.
@@ -82,14 +82,22 @@ Agent(subagent_type: "fact-checker", description: "검수 <웨이브>",
       prompt: "검수할 섹터: <섹터 목록>. fact-check 스킬대로.")
 ```
 
-"수정 필요" 섹터는 `sector-analyst`를 `review.md` 경로와 함께 다시 부르고, 그 섹터만 다시 검수한다. **최대 2회.** 그래도 남으면 상태판에 "막힘"으로 두고 사용자에게 알린다.
+"수정 필요" 섹터는 반환 한 줄의 **책임 단계별 건수**를 보고 고칠 사람을 고른다(`review.md` 본문은 읽지 않는다). 각 에이전트에 `review.md` 경로를 함께 준다.
+
+| 책임 | 다시 부르는 순서 |
+|---|---|
+| 수집 ≥ 1 | `report-collector`(1–3절) → 커밋 → `sector-analyst`(4–7절 맞춤) |
+| Chrome ≥ 1 | `SendMessage({to: "web-researcher"}, "재조사: <섹터>, review.md의 책임: Chrome 항목. chrome-findings_v2.md로")` → 커밋 → `sector-analyst` |
+| 분석만 | `sector-analyst` |
+
+수집과 Chrome이 함께 있으면 둘 다 고친 뒤 분석가를 한 번만 부른다. 그다음 그 섹터만 다시 검수한다. **섹터당 최대 2회**(위 한 바퀴가 1회). 그래도 남으면 상태판에 "막힘"으로 두고 사용자에게 알린다.
 
 ### 6단계: 정리 (지휘자가 직접)
 
 1. 상태판 갱신: 단계 상태, 섹터 `credits.md` 합계, 크레딧 총합(상한 100).
-2. `orchestration-log.md`에 기록: 단계 시작·종료 시각, 에이전트별 소요 시간·토큰(완료 알림에 나오는 값), 컨텍스트 압축, 사람의 개입.
+2. `orchestration-log.md`에 기록: 에이전트 호출마다 「에이전트 실행 기록」 표에 한 줄(완료 알림에 나오는 토큰·소요 시간·도구 호출 수를 그대로), 컨텍스트 압축과 사람의 개입은 「관찰」에.
 3. `brief.md`의 Alexandria 요청을 모아 사용자에게 보여 주고, 승인한 것만 지휘자가 호출한다.
-4. 커밋하고 `git push origin claude/festive-hypatia-4b15sz`로 백업한다.
+4. 커밋하고 `git push -u origin <작업 브랜치>`로 백업한다.
 5. 웨이브가 끝나면 `harness-evolve`로 회고할지 사용자에게 묻는다.
 
 ## 데이터 전달
@@ -99,7 +107,7 @@ Agent(subagent_type: "fact-checker", description: "검수 <웨이브>",
 | 수집 → Chrome | 파일 `chrome-brief.md` + 메시지로 섹터 이름 |
 | Chrome → 분석 | 파일 `chrome-findings.md` |
 | 수집·분석 → 지휘자 | 반환값 = `brief.md` (30줄 이하) |
-| 분석 → 검수 → 분석 | 파일 `dossier.md`, `review.md` |
+| 분석 → 검수 → 책임 단계 | 파일 `dossier.md`, `review.md` + 반환 한 줄의 책임 단계별 건수 |
 
 **커밋 = 동결.** 단계가 끝날 때마다 지휘자가 그 섹터 파일을 커밋한다. 다음 단계는 커밋된 파일을 읽고, 나중에 바뀌면 `git diff`로 바로 보인다. 에이전트는 커밋하지 않는다.
 
