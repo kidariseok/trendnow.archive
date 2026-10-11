@@ -1,0 +1,25 @@
+{
+ "handle": "trendnow.archive",
+ "topic": "서울 전시·바·카페 직접 방문기",
+ "mood": "차분한 에디토리얼, 사진 위주",
+ "slide": {
+  "size": "1080x1350",
+  "count": "9-10",
+  "header": {"wordmark": "trendnow.archive", "page_number": "01 / 09"}
+ },
+ "fonts": {
+  "wordmark": "이탤릭 세리프 (정확한 폰트 이름 미기재)",
+  "heading": "한글 산세리프 (정확한 폰트 이름 미기재)",
+  "body": "한글 산세리프 (정확한 폰트 이름 미기재)"
+ },
+ "colors": {
+  "text_on_photo": "#FFFFFF",
+  "accent": "게시물마다 장소에 맞춰 선택",
+  "solid_background": "게시물마다 한 가지 단색"
+ },
+ "caption": {
+  "credit_line": "📸 직접 다녀와 찍은 사진 · trendnow.archive",
+  "brand_hashtag": "#trendnow",
+  "hashtag_count": 5
+ }
+}
