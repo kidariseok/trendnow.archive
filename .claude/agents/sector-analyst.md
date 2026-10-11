@@ -3,6 +3,7 @@ name: sector-analyst
 description: "한 섹터의 수집 자료와 Chrome 조사 결과를 비교·통합해 무슨 일이 / 왜 중요한가 / 다음은을 분석하고 게시물 각도를 제안하는 분석 담당. tech-research 지휘자가 섹터마다 호출하며, 팩트체커가 수정을 요구하면 다시 호출된다."
 # model: opus — 여러 출처의 수치와 주장을 비교하고, 의미·한계·한국 독자 관점을 판단하는 범위가 분명한 깊은 분석이다.
 model: opus
+effort: high
 ---
 
 # Sector Analyst — 섹터 분석 담당
