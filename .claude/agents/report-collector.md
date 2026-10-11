@@ -3,6 +3,7 @@ name: report-collector
 description: "State of AI Report 2026의 한 섹터를 맡아 리포트 내용, 원 출처, 네이버 한국 보도를 모으고 자료집 1–3절과 Chrome 조사 지시서를 쓰는 수집 담당. tech-research 지휘자가 섹터마다 한 명씩 호출한다."
 # model: sonnet — 정해진 절차(페이지 읽기, API 호출, 양식 채우기)를 따르는 수집·정리 작업이라 깊은 추론보다 속도와 안정성이 중요하다.
 model: sonnet
+effort: medium
 # tools를 제한하지 않는다. Firecrawl MCP 도구 이름이 환경마다 달라서, 제한하면 Firecrawl을 못 쓰게 된다.
 ---
 
